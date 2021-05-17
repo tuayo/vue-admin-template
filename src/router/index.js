@@ -1,11 +1,29 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Layout from '@/layout'
 
-const routes = [
+export const constantRoutes = [
   {
     path: '/',
+    component: Layout,
+    redirect: '/home',
+    children: [
+      {
+        path: '/home',
+        component: () => import('@/views/home/index'),
+        name: 'Home',
+        meta: {title: '首页', icon: 'dashboard', affix: true}
+      }
+    ]
+  },
+  {
+    path: '/home',
     name: 'Home',
-    component: Home
+    component: () => import('@/views/home/index')
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/index')
   },
   {
     path: '/about',
@@ -17,9 +35,12 @@ const routes = [
   }
 ]
 
+export const asyncRoutes = []
+
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  scrollBehavior: () => ({y: 0}),
+  routes: constantRoutes
 })
 
 export default router
